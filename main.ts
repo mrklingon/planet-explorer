@@ -4,7 +4,7 @@ function shoMT (xnum: number, HT: number) {
     }
     if (HT >= 0) {
         for (let index2 = 0; index2 <= HT; index2++) {
-            led.plotBrightness(xnum, 5 - index2, 100)
+            led.plotBrightness(xnum, 5 - index2, 50)
         }
     } else {
         height = Math.abs(HT)
@@ -74,7 +74,7 @@ basic.forever(function () {
         speed += 0.25
         click = 0
     }
-    if (led.pointBrightness(0, shipy) == 100) {
+    if (led.pointBrightness(0, shipy) == 50) {
         game.removeLife(1)
         shipy = 0
     }

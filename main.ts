@@ -1,3 +1,9 @@
+function doStart () {
+    BuildLandscape(100)
+    click = 0
+    speed = 1
+    shipy = 0
+}
 function shoMT (xnum: number, HT: number) {
     for (let index2 = 0; index2 <= 4; index2++) {
         led.plotBrightness(xnum, 5 - index2, 0)
@@ -30,6 +36,39 @@ input.onButtonPressed(Button.A, function () {
         shipy = 0
     }
 })
+function planetSplash () {
+    basic.showLeds(`
+        . . . . #
+        . . . . .
+        . . # . .
+        . . . . #
+        # . . . .
+        `)
+    basic.pause(100)
+    basic.showLeds(`
+        . . # . .
+        . . . . #
+        # . . . .
+        . . . . .
+        . . . . .
+        `)
+    basic.pause(100)
+    basic.showLeds(`
+        # . . . .
+        . . . . .
+        . . . . .
+        . # # # .
+        # # # # #
+        `)
+    basic.pause(100)
+    basic.showLeds(`
+        . # # # .
+        # # # # #
+        # # # # #
+        . # # # .
+        . . . . .
+        `)
+}
 input.onButtonPressed(Button.B, function () {
     led.unplot(0, shipy)
     shipy += 1
@@ -48,6 +87,9 @@ let mt = 0
 let MtList: number[] = []
 let height = 0
 let shipy = 0
+let speed = 0
+let click = 0
+planetSplash()
 images.createBigImage(`
     . . . . . . . . # #
     . . . . . # # # . .
@@ -62,11 +104,9 @@ images.createBigImage(`
     . . . # # . . # . #
     # # # # # # # # # #
     `).scrollImage(1, 200)
-BuildLandscape(100)
-let click = 0
 game.setLife(5)
-let speed = 1
-shipy = 0
+let goal = 0
+doStart()
 basic.forever(function () {
     showLand()
     click += 1
@@ -79,10 +119,23 @@ basic.forever(function () {
         shipy = 0
     }
     if (led.pointBrightness(0, shipy) == 255) {
+        goal += 1
         shipy = 0
         game.addLife(1)
         game.addScore(randint(10, 50))
     }
     led.plotBrightness(0, shipy, 200)
     basic.pause(200 / speed)
+    if (goal > 3) {
+        goal = 0
+        planetSplash()
+        basic.showLeds(`
+            . . . . .
+            . . . . .
+            . . . . .
+            . . . . .
+            . . . . .
+            `)
+        doStart()
+    }
 })
